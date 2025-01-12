@@ -1,10 +1,13 @@
+// constants.ts
 import type { Voice } from "@/types";
 
 export const BASE_TEXTS = [
-  "The weather is beautiful today.",
-  "I can't believe what just happened.",
-  "This is the best day ever.",
-  "We need to talk about something.",
+  "I know what you did",
+  "Everything will change after this",
+  "They never told me the truth",
+  "Let's keep this between us",
+  "It's not what you think",
+  "You won't believe what I found",
 ];
 
 export const EMOTION_TEXTS = [
@@ -12,10 +15,18 @@ export const EMOTION_TEXTS = [
   "they shouted angrily.",
   "they said excitedly.",
   "they muttered nervously.",
+  "they said sarcastically.",
+  "they confessed quietly.",
+  "they declared confidently.",
+  "they pleaded desperately.",
+  "they revealed hesitantly.",
+  "they announced proudly.",
+  "they responded coldly.",
+  "they teased playfully.",
 ];
 
 export const VOICES: Voice[] = [
-  { id: "N2lVS1w4EtoT3dr4eOWO", name: "Callum" },
   { id: "cgSgspJ2msm6clMCkdW9", name: "Jessica" },
+  { id: "N2lVS1w4EtoT3dr4eOWO", name: "Callum" },
 ];
 

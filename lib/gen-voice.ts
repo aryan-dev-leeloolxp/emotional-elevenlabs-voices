@@ -12,14 +12,14 @@ export default async function genVoice({
   try {
     const audio = await elevenlabs.generate({
       voice: voiceId,
-      text,
+      text: `${text}"`,
       model_id: "eleven_multilingual_v2",
       voice_settings: {
         stability: 0.3,
         similarity_boost: 0.75,
         use_speaker_boost: true,
       },
-      next_text: emotion,
+      next_text: `", ${emotion}`,
     });
     console.log("Generated voice", { voiceId, text, emotion });
 
