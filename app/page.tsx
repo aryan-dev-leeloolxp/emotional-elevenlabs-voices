@@ -1,101 +1,120 @@
-import Image from "next/image";
+"use client";
+import { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardFooter,
+} from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { Wand2 } from "lucide-react";
+import { TextInput } from "@/components/text-input";
+import { EmotionVoiceInput } from "@/components/emotion-voice-input";
+import { BASE_TEXTS, EMOTION_TEXTS, VOICES } from "@/constants";
+import type { AudioState } from "@/types";
 
-export default function Home() {
+export default function VoiceDemo() {
+  const [mainText, setMainText] = useState(BASE_TEXTS[0]);
+  const [emotionTexts, setEmotionTexts] = useState([
+    "",
+    ...EMOTION_TEXTS.slice(0, 3),
+  ]);
+  const [selectedVoice, setSelectedVoice] = useState(VOICES[0].id);
+  const [audioStates, setAudioStates] = useState<AudioState[]>(
+    Array(4).fill({ url: "", isPlaying: false })
+  );
+
+  const getRandomText = () =>
+    BASE_TEXTS[Math.floor(Math.random() * BASE_TEXTS.length)];
+  const getRandomEmotion = () =>
+    EMOTION_TEXTS[Math.floor(Math.random() * EMOTION_TEXTS.length)];
+
+  const handleGenerateAll = async () => {
+    // TODO: Implement ElevenLabs API calls for all variations
+    setAudioStates(Array(4).fill({ url: "stub_url", isPlaying: false }));
+  };
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div className="max-w-2xl mx-auto p-6 space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>Voice Emotion Demo</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <TextInput
+            value={mainText}
+            onChange={setMainText}
+            onRandomize={() => setMainText(getRandomText())}
+            label="Base Text"
+          />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Voice</label>
+            <Select value={selectedVoice} onValueChange={setSelectedVoice}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select voice" />
+              </SelectTrigger>
+              <SelectContent>
+                {VOICES.map((voice) => (
+                  <SelectItem key={voice.id} value={voice.id}>
+                    {voice.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {emotionTexts.map((text, index) => (
+            <EmotionVoiceInput
+              key={index}
+              text={text}
+              onTextChange={(newText) =>
+                setEmotionTexts((prev) => {
+                  const newTexts = [...prev];
+                  newTexts[index] = newText;
+                  return newTexts;
+                })
+              }
+              onRandomize={() => {
+                setEmotionTexts((prev) => {
+                  const newTexts = [...prev];
+                  newTexts[index] = index === 0 ? "" : getRandomEmotion();
+                  return newTexts;
+                });
+              }}
+              audioState={audioStates[index]}
+              onPlayPause={(playing) => {
+                setAudioStates((prev) => {
+                  const newStates = [...prev];
+                  newStates[index] = {
+                    ...newStates[index],
+                    isPlaying: playing,
+                  };
+                  return newStates;
+                });
+              }}
+              isNormal={index === 0}
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+          ))}
+        </CardContent>
+        <CardFooter>
+          <Button
+            onClick={handleGenerateAll}
+            className="w-full flex gap-2 items-center"
           >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+            <Wand2 size={16} />
+            Generate All Variations
+          </Button>
+        </CardFooter>
+      </Card>
     </div>
   );
 }
