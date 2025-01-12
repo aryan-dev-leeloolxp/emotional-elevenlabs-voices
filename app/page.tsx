@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import {
   Card,
@@ -15,11 +16,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Wand2 } from "lucide-react";
+import { Loader2, Wand2 } from "lucide-react";
 import { TextInput } from "@/components/text-input";
 import { EmotionVoiceInput } from "@/components/emotion-voice-input";
 import { BASE_TEXTS, EMOTION_TEXTS, VOICES } from "@/constants";
 import type { AudioState } from "@/types";
+import { generateAudioSequence } from "./actions";
 
 export default function VoiceDemo() {
   const [mainText, setMainText] = useState(BASE_TEXTS[0]);
@@ -31,6 +33,7 @@ export default function VoiceDemo() {
   const [audioStates, setAudioStates] = useState<AudioState[]>(
     Array(4).fill({ url: "", isPlaying: false })
   );
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const getRandomText = () =>
     BASE_TEXTS[Math.floor(Math.random() * BASE_TEXTS.length)];
@@ -38,8 +41,32 @@ export default function VoiceDemo() {
     EMOTION_TEXTS[Math.floor(Math.random() * EMOTION_TEXTS.length)];
 
   const handleGenerateAll = async () => {
-    // TODO: Implement ElevenLabs API calls for all variations
-    setAudioStates(Array(4).fill({ url: "stub_url", isPlaying: false }));
+    setIsGenerating(true);
+    try {
+      const results = await generateAudioSequence(
+        selectedVoice,
+        mainText,
+        emotionTexts
+      );
+
+      results.forEach((result, index) => {
+        if (result.audioData?.length) {
+          const blob = new Blob([new Uint8Array(result.audioData)], {
+            type: "audio/mpeg",
+          });
+          const url = URL.createObjectURL(blob);
+          setAudioStates((prev) => {
+            const newStates = [...prev];
+            newStates[index] = { url, isPlaying: false };
+            return newStates;
+          });
+        }
+      });
+    } catch (error) {
+      console.error("Error generating voices:", error);
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   return (
@@ -83,15 +110,15 @@ export default function VoiceDemo() {
                   return newTexts;
                 })
               }
-              onRandomize={() => {
+              onRandomize={() =>
                 setEmotionTexts((prev) => {
                   const newTexts = [...prev];
                   newTexts[index] = index === 0 ? "" : getRandomEmotion();
                   return newTexts;
-                });
-              }}
+                })
+              }
               audioState={audioStates[index]}
-              onPlayPause={(playing) => {
+              onPlayPause={(playing) =>
                 setAudioStates((prev) => {
                   const newStates = [...prev];
                   newStates[index] = {
@@ -99,8 +126,8 @@ export default function VoiceDemo() {
                     isPlaying: playing,
                   };
                   return newStates;
-                });
-              }}
+                })
+              }
               isNormal={index === 0}
             />
           ))}
@@ -109,9 +136,14 @@ export default function VoiceDemo() {
           <Button
             onClick={handleGenerateAll}
             className="w-full flex gap-2 items-center"
+            disabled={isGenerating}
           >
-            <Wand2 size={16} />
-            Generate All Variations
+            {isGenerating ? (
+              <Loader2 size={16} className="animate-spin" />
+            ) : (
+              <Wand2 size={16} />
+            )}
+            {isGenerating ? "Generating..." : "Generate All Variations"}
           </Button>
         </CardFooter>
       </Card>

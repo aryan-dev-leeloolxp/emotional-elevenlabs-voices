@@ -1,4 +1,3 @@
-// constants.ts
 import type { Voice } from "@/types";
 
 export const BASE_TEXTS = [
@@ -16,7 +15,7 @@ export const EMOTION_TEXTS = [
 ];
 
 export const VOICES: Voice[] = [
-  { id: "voice1", name: "Rachel" },
-  { id: "voice2", name: "John" },
-  { id: "voice3", name: "Emma" },
+  { id: "N2lVS1w4EtoT3dr4eOWO", name: "Callum" },
+  { id: "cgSgspJ2msm6clMCkdW9", name: "Jessica" },
 ];
+

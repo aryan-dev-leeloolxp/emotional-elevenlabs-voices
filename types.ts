@@ -3,11 +3,6 @@ export interface Voice {
   name: string;
 }
 
-export interface AudioState {
-  url: string;
-  isPlaying: boolean;
-}
-
 export interface TextInputProps {
   value: string;
   onChange: (value: string) => void;
@@ -15,3 +10,8 @@ export interface TextInputProps {
   label: string;
 }
 
+export interface AudioState {
+  url: string;
+  isPlaying: boolean;
+  audioData?: number[];
+}

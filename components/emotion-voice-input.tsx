@@ -41,14 +41,15 @@ export function EmotionVoiceInput({
             </Button>
           </>
         )}
+        {audioState.url && (
+          <AudioPlayer
+            url={audioState.url}
+            isPlaying={audioState.isPlaying}
+            onPlayPause={onPlayPause}
+          />
+        )}
       </div>
-      {audioState.url && (
-        <AudioPlayer
-          url={audioState.url}
-          isPlaying={audioState.isPlaying}
-          onPlayPause={onPlayPause}
-        />
-      )}
     </div>
   );
 }
+
