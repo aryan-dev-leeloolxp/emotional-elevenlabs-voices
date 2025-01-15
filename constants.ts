@@ -11,18 +11,18 @@ export const BASE_TEXTS = [
 ];
 
 export const EMOTION_TEXTS = [
-  "they whispered softly.",
-  "they shouted angrily.",
-  "they said excitedly.",
-  "they muttered nervously.",
-  "they said sarcastically.",
-  "they confessed quietly.",
-  "they declared confidently.",
-  "they pleaded desperately.",
-  "they revealed hesitantly.",
-  "they announced proudly.",
-  "they responded coldly.",
-  "they teased playfully.",
+  "they shouted angrily",
+  "they confessed quietly",
+  "they announced proudly",
+  "they said slowly",
+  "they said sarcastically",
+  "they said excitedly",
+  "they muttered nervously",
+  "they declared confidently",
+  "they pleaded desperately",
+  "they revealed hesitantly",
+  "they responded coldly",
+  "they teased playfully",
 ];
 
 export const VOICES: Voice[] = [

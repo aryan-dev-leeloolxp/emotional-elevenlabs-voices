@@ -19,6 +19,7 @@ export default async function genVoice({
         similarity_boost: 0.75,
         use_speaker_boost: true,
       },
+      previous_text: `${emotion}, `,
       next_text: `", ${emotion}`,
     });
     console.log("Generated voice", { voiceId, text, emotion });
