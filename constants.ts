@@ -13,10 +13,10 @@ export const BASE_TEXTS = [
 export const EMOTION_TEXTS = [
   "they shouted angrily",
   "they confessed quietly",
+  "they said sarcastically",
+  "they said slowly, with confusion",
   "they pleaded desperately",
   "they announced proudly",
-  "they said slowly",
-  "they said sarcastically",
   "they said excitedly",
   "they muttered nervously",
   "they declared confidently",
