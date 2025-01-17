@@ -12,15 +12,14 @@ export default async function genVoice({
   try {
     const audio = await elevenlabs.generate({
       voice: voiceId,
-      text: `${text}"`,
-      model_id: "eleven_multilingual_v2",
+      text: `"${text}"`,
+      model_id: "eleven_monolingual_v1", // This is an old model, but according to the docs it works the best with this type of prompting. You can still get decent results with the latest model.
       voice_settings: {
         stability: 0.3,
         similarity_boost: 0.75,
         use_speaker_boost: true,
       },
-      previous_text: `${emotion}, `,
-      next_text: `", ${emotion}`,
+      next_text: `, ${emotion}`,
     });
     console.log("Generated voice", { voiceId, text, emotion });
 
