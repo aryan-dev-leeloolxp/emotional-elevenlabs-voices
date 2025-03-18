@@ -1,8 +1,8 @@
 // constants.ts
-import type { Voice } from "@/types";
+import type { Voice, Language } from "@/types";
 
 export const BASE_TEXTS = [
-  "I know what you did",
+  "noooooooooooo, run run run nooooo, go away, oooo",
   "Everything will change after this",
   "They never told me the truth",
   "Let's keep this between us",
@@ -28,5 +28,12 @@ export const EMOTION_TEXTS = [
 export const VOICES: Voice[] = [
   { id: "cgSgspJ2msm6clMCkdW9", name: "Jessica" },
   { id: "N2lVS1w4EtoT3dr4eOWO", name: "Callum" },
+];
+
+export const LANGUAGES: { id: Language; name: string }[] = [
+  { id: "en", name: "English" },
+  { id: "es", name: "Spanish" },
+  { id: "fr", name: "French" },
+  { id: "de", name: "German" },
 ];
 

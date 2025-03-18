@@ -3,6 +3,8 @@ export interface Voice {
   name: string;
 }
 
+export type Language = "en" | "es" | "fr" | "de";
+
 export interface TextInputProps {
   value: string;
   onChange: (value: string) => void;

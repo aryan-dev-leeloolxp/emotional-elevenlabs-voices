@@ -15,7 +15,8 @@ async function streamToBuffer(stream: Readable): Promise<Buffer> {
 export async function generateAudioSequence(
   voiceId: string,
   mainText: string,
-  emotionTexts: string[]
+  emotionTexts: string[],
+  language: "en" | "es" | "fr" | "de" = "en"
 ): Promise<AudioState[]> {
   const audioStates: AudioState[] = [];
 
@@ -25,6 +26,7 @@ export async function generateAudioSequence(
         voiceId,
         text: mainText,
         emotion: emotionTexts[i] || undefined,
+        language,
       });
 
       if (audio) {

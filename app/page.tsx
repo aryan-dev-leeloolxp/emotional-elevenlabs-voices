@@ -19,8 +19,8 @@ import { Button } from "@/components/ui/button";
 import { Loader2, Wand2 } from "lucide-react";
 import { TextInput } from "@/components/text-input";
 import { EmotionVoiceInput } from "@/components/emotion-voice-input";
-import { BASE_TEXTS, EMOTION_TEXTS, VOICES } from "@/constants";
-import type { AudioState } from "@/types";
+import { BASE_TEXTS, EMOTION_TEXTS, VOICES, LANGUAGES } from "@/constants";
+import type { AudioState, Language } from "@/types";
 import { generateAudioSequence } from "./actions";
 
 export default function VoiceDemo() {
@@ -30,6 +30,7 @@ export default function VoiceDemo() {
     ...EMOTION_TEXTS.slice(0, 3),
   ]);
   const [selectedVoice, setSelectedVoice] = useState(VOICES[0].id);
+  const [selectedLanguage, setSelectedLanguage] = useState<Language>("en");
   const [audioStates, setAudioStates] = useState<AudioState[]>(
     Array(4).fill({ url: "", isPlaying: false })
   );
@@ -46,7 +47,8 @@ export default function VoiceDemo() {
       const results = await generateAudioSequence(
         selectedVoice,
         mainText,
-        emotionTexts
+        emotionTexts,
+        selectedLanguage
       );
 
       results.forEach((result, index) => {
@@ -69,6 +71,7 @@ export default function VoiceDemo() {
     }
   };
 
+  console.log("selectedLanguage", selectedLanguage);
   return (
     <div className="max-w-2xl mx-auto p-6 space-y-6">
       <Card>
@@ -93,6 +96,25 @@ export default function VoiceDemo() {
                 {VOICES.map((voice) => (
                   <SelectItem key={voice.id} value={voice.id}>
                     {voice.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Language</label>
+            <Select
+              value={selectedLanguage}
+              onValueChange={(value: Language) => setSelectedLanguage(value)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select language" />
+              </SelectTrigger>
+              <SelectContent>
+                {LANGUAGES.map((language) => (
+                  <SelectItem key={language.id} value={language.id}>
+                    {language.name}
                   </SelectItem>
                 ))}
               </SelectContent>
